@@ -133,9 +133,12 @@ def lambda_handler(event, context):
                         "iam_role_name": response['body']['resources'][0]['iam_role_arn'].rsplit('/')[1],
                         "intermediate_role_arn": response['body']['resources'][0]['intermediate_role_arn'],
                         "cs_role_name": response['body']['resources'][0]['intermediate_role_arn'].rsplit('/')[1],
-                        "external_id": response['body']['resources'][0]['external_id'],
-                        "eventbus_name": response['body']['resources'][0]['eventbus_name'].rsplit(',')[0]
+                        "external_id": response['body']['resources'][0]['external_id']
                     }
+                    if ACCOUNT_TYPE == "commercial":
+                        response_d['eventbus_name'] = response['body']['resources'][0]['eventbus_name']
+                    elif ACCOUNT_TYPE == "govcloud":
+                        response_d['eventbus_name'] = response['body']['resources'][0]['eventbus_name'].rsplit(',')[0]
                     cfnresponse_send(event, context, SUCCESS, response_d, "CustomResourcePhysicalID")
                 else:
                     response_d = response['body']
