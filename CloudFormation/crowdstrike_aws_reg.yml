@@ -90,6 +90,7 @@ Parameters:
       - 'us2'
       - 'eu1'
       - 'usgov1'
+      - 'usgov2'
     Default: us1
     Description: The CrowdStrike Cloud in which your Falcon CID is hosted.
   EnableIOA:
