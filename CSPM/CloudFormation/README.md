@@ -14,6 +14,8 @@
 2. Verify the AWS Organization and child accounts are not listed.
 3. If they are listed, deregister and remove CrowdStrike resources from those accounts before proceeding.
 
+### If the Organization is currently registered, or you do not want to run the Registration Lambda in the Management Account for any reason, see [Provision Only Steps](./provision-only/README.md)
+
 ## Setup
 1. Download the contents of this repository.
 2. Log in to the Management Account of your AWS Organization
