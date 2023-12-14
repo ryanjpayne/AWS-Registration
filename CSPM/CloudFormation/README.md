@@ -17,9 +17,12 @@
 ## Setup
 1. Download the contents of this repository.
 2. Log in to the Management Account of your AWS Organization
-3. Upload the lambda.zip package to the root of an S3 Bucket.
+3. Upload the following files to the root of an S3 Bucket.
+- crowdstrike_aws_cspm_register_lambda.zip 
+- crowdstrike_aws_cspm.json (Commercial AWS Only)
+- crowdstrike_aws_gov_cspm.json (GovCloud AWS Only)
 4. In the CloudFormation console select create stack.
-5. Choose Specify Template and upload crowdstrike_aws_reg.yml
+5. Choose Specify Template and upload init_crowdstrike_aws_cspm_register.yml
 6. Fill out the parameters, click next.
 7. Optional: change Stack Failure Options to Preserve successfully provisioned resources. This option will allow you to maintain the stack and update parameters in the event of a mistake.
 7. Enabled the capabilities in the blue box and click submit.
@@ -30,6 +33,7 @@
 |FalconAccountType| Type of CrowdStrike Falcon Account |commercial or govcloud|
 |AWSAccountType| Type of AWS Account |commercial or govcloud|
 |S3Bucket| Name of the S3 Bucket containing lambda.zip| |
+|PermissionsBoundary| Optional: Name of the Permissions Boundary Policy to apply to IAM Roles||
 |FalconClientID| Falcon API client Id | |
 |FalconSecret| Falcon API client secret| |
 |CSCloud| Falcon Cloud region| us1, us2, eu1, usgov1, usgov2|
@@ -47,12 +51,12 @@
 2. Create Lambda to register AWS Org with Falcon Cloud Security Service via API
 3. Create Child Stacks and StackSets to provision root account and child accounts with CrowdStrike Cloud Security resources
 - Root CrowdStrikeStack
-1. Create Stacks in root account using [IOM template](https://cs-prod-cloudconnect-templates.s3.amazonaws.com/aws_cspm_cloudformation_v2.json)
+1. Create Stacks in root account using [IOM template](./crowdstrike_aws_cspm.json)
 2. Create CSPM Reader Role for IOMs
 3. Create IOA Role for Eventbridge (if EnableIOA = true)
 4. Create Sensor Management Role and Lambda (if EnableSensorManagement = true)
 - CrowdStrike-Cloud-Security-Stackset 
-1. Create Stacks in each child account using [IOM template](https://cs-prod-cloudconnect-templates.s3.amazonaws.com/aws_cspm_cloudformation_v2.json)
+1. Create Stacks in each child account using [IOM template](./crowdstrike_aws_cspm.json)
 2. Create CSPM Reader Role for IOMs
 3. Create IOA Role for Eventbridge (if EnableIOA = true)
 4. Create Sensor Management Role and Lambda (if EnableSensorManagement = true)
@@ -63,6 +67,6 @@
 1. Create Stacks in root account using [IOA template](https://cs-prod-cloudconnect-templates.s3.amazonaws.com/aws_cspm_cloudformation_eb_v2.json)
 2. Create EventBridge rules to forward IOAs
 
-**Note**: If provisioning govcloud, the following remote templates are used instead:
-- [GovCloud IOM template](https://cs-csgov-laggar-cloudconnect-templates.s3-us-gov-west-1.amazonaws.com/aws_cspm_cloudformation_v2.json)
+**Note**: If provisioning govcloud, the following templates are used instead:
+- [GovCloud IOM template](./crowdstrike_aws_gov_cspm.json)
 - [GovCloud IOA template](https://cs-csgov-laggar-cloudconnect-templates.s3-us-gov-west-1.amazonaws.com/aws_cspm_cloudformation_eb_v2.json)
