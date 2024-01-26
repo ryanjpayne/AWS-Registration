@@ -5,9 +5,9 @@ CrowdStrike Horizon Cloud CSPM Registration - AWS
 This terraform configuration will onboard an AWS Organization/Control Tower with Falcon CSPM
 
 ## Use Case
-Customer declines the bash and/or terraform methods presented in the Falcon Console
-Customer needs to exclude regions prohibited by SCPs
-Customer wants to use terraform ONLY solution (terraform in console uses AWS Stacksets)
+- Customer declines the bash and/or terraform methods presented in the Falcon Console
+- Customer needs to exclude regions prohibited by SCPs
+- Customer wants to use terraform ONLY solution (terraform in console uses AWS Stacksets)
 
 Falcon API Permissions
 ----------------------
