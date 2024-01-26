@@ -28,28 +28,33 @@ Configure main.tf
 Modify each of the following sections of the locals block to set your configuration
 
 1. Set your AWS CLI profile name and Region for the AWS Organization Management account
-```root_account = {
+```
+root_account = {
     profile = "default"
     region  = "us-east-1"
 }
 ```
 
 2. Configure your CrowdStrike Falcon API keys.  These will be used to call registration API.  Required Scope: CSPM registration Read & Write
-```falcon_client_id = ""
+```
+falcon_client_id = ""
 falcon_secret = ""
 crowdstrike_cloud = "" us-1 or us-2 or eu-1
 ```
 
 3. Enable Behavioral Assessment? If true, EventBridge rules will be deployed in each enabled region to forward indicators of attack (IOA) to CrowdStrike.
-```enable_ioa = true
+```
+enable_ioa = true
 ```
 
 4. Optional, change to false to add CloudTrail for Read Only IOAsS
-```use_existing_cloudtrail = true
+```
+use_existing_cloudtrail = true
 ```
 
 5. Uncomment regions to exclude from IOA Provisioning (EventBridge Rules).  This will be useful if your organization leverages SCPs to deny specific regions.
-```exclude_regions = [
+```
+exclude_regions = [
     #us-east-1
     us-east-2 << This region would be excluded
 ```
@@ -57,7 +62,8 @@ crowdstrike_cloud = "" us-1 or us-2 or eu-1
 > **Note** <br> How to provision multiple accounts:
 > In main.tf duplicate the following local, provider and module blocks for each additional account you wish to provision. You will need to increment numeral values eg. account_2, provision_2, account_3, provision_3 etc
 
-```locals {
+```
+locals {
     account_2 = {
         profile = "profile2"
         region  = "us-east-1"
@@ -88,16 +94,20 @@ module "provision_2" {
 How to apply
 ------------
 1. Initialize terraform providers and environment
-```terraform init
+```
+terraform init
 ```
 2. Generate Plan
-```terraform plan
+```
+terraform plan
 ```
 3. Apply configuration
-```terraform apply
+```
+terraform apply
 ```
 4. Destroy configuration **Note** This will deregister your AWS Accounts from Horizon
-```terraform destroy
+```
+terraform destroy
 ```
 
 How It Works
