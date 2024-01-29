@@ -36,6 +36,7 @@ Metadata:
           default: Enable OneClick Sensor Management
         Parameters:
           - EnableSensorManagement
+          - APICredentialsStorageMode
       - Label:
           default: Root Stackset Role Names
         Parameters:
@@ -69,6 +70,8 @@ Metadata:
         default: Stackset Administration Role Name
       StackSetExecRole:
         default: Stackset Execution Role Name
+      APICredentialsStorageMode:
+        default: APICredentialsStorageMode
 
 Parameters:
   StackSetAdminRole:
@@ -138,6 +141,11 @@ Parameters:
       - 'commercial'
       - 'govcloud'
     Default: 'commercial'
+  APICredentialsStorageMode:
+    Type: String
+    Description: How Falcon API credentials are stored. 'lambda' stores them in the lambda environment variables, 'secret' in an AWS secret
+    Default: secret
+    AllowedValues: ["lambda", "secret"]
     
 Conditions:
   CreateIOAResources: !Equals [ !Ref 'EnableIOA', true ]
@@ -177,6 +185,7 @@ Resources:
         ClientID: !Ref FalconClientID
         ClientSecret: !Ref FalconSecret
         PermissionsBoundary: !Ref PermissionsBoundary
+        APICredentialsStorageMode: !Ref APICredentialsStorageMode
       TemplateURL:
         Fn::If: 
           - IsGovCloud
@@ -211,6 +220,8 @@ Resources:
           ParameterValue: !Ref FalconSecret
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
+        - ParameterKey: APICredentialsStorageMode
+          ParameterValue: !Ref APICredentialsStorageMode
       PermissionModel: SERVICE_MANAGED
       OperationPreferences:
         MaxConcurrentPercentage: 100
