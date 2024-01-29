@@ -400,7 +400,7 @@
                         "secretsmanager:GetSecretValue"
                       ],
                       "Resource": [
-                        {"Fn::Sub": "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/CrowdStrike/CSPM/SensorManagement/FalconAPICredentials-??????"}
+                        {"Fn::Sub": "arn:aws-us-gov:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/CrowdStrike/CSPM/SensorManagement/FalconAPICredentials-??????"}
                       ],
                       "Effect": "Allow"
                     },
