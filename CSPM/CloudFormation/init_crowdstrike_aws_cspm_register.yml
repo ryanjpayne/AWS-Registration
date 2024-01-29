@@ -189,7 +189,7 @@ Resources:
       TemplateURL:
         Fn::If: 
           - IsGovCloud
-          - !Sub https://${S3Bucket}.s3.${AWS::Region}.amazonaws.com/crowdstrike_aws_gov_cspm.json
+          - !Sub https://${S3Bucket}.s3.amazonaws.com/crowdstrike_aws_gov_cspm.json
           - !Sub https://${S3Bucket}.s3.amazonaws.com/crowdstrike_aws_cspm.json
 
   # Create IAM Reader Role and optional IOA and Sensor Management resources in each Child Account via StackSet
@@ -239,7 +239,7 @@ Resources:
       TemplateURL:
         Fn::If: 
           - IsGovCloud
-          - !Sub https://${S3Bucket}.${AWS::Region}.s3.amazonaws.com/crowdstrike_aws_gov_cspm.json
+          - !Sub https://${S3Bucket}.s3.amazonaws.com/crowdstrike_aws_gov_cspm.json
           - !Sub https://${S3Bucket}.s3.amazonaws.com/crowdstrike_aws_cspm.json
 
   # IAM Role to allow StackSet Administration in Root Account
