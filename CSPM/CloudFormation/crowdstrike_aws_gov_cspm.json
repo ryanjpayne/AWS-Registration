@@ -68,6 +68,13 @@
       "Type": "String",
       "Description": "The name of the policy used to set the permissions boundary for IAM roles",
       "Default": ""
+    },
+
+    "APICredentialsStorageMode": {
+      "Type": "String",
+      "Description": "How Falcon API credentials are stored. 'lambda' stores them in the lambda environment variables, 'secret' in an AWS secret.",
+      "Default": "lambda",
+      "AllowedValues": ["lambda", "secret"]
     }
   },
   "Conditions": {
@@ -106,6 +113,24 @@
       "Fn::Not": [{
         "Fn::Equals" : [ {"Ref": "PermissionsBoundary"}, "" ]
       }]
+    },
+    "APICredentialsInSecretEnabled" : {
+      "Fn::Equals": [
+        {"Ref": "APICredentialsStorageMode"},
+        "secret"
+      ]
+    },
+    "APICredentialsInLambdaEnabled" : {
+      "Fn::Equals": [
+        {"Ref": "APICredentialsStorageMode"},
+        "lambda"
+      ]
+    },
+    "ShouldCreateSensorManagementCredentialsSecret": {
+      "Fn::And": [
+        {"Condition": "ShouldCreateSensorManagementResources"},
+        {"Condition": "APICredentialsInSecretEnabled"}
+      ]
     }
   },
   "Resources": {
@@ -365,6 +390,22 @@
                   ],
                   "Effect": "Allow",
                   "Sid": "Logging"
+                },
+                {
+                  "Fn::If": [
+                    "APICredentialsInSecretEnabled",
+                    {
+                      "Sid": "GetFalconCredentials",
+                      "Action": [
+                        "secretsmanager:GetSecretValue"
+                      ],
+                      "Resource": [
+                        {"Fn::Sub": "arn:aws-us-gov:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/CrowdStrike/CSPM/SensorManagement/FalconAPICredentials-??????"}
+                      ],
+                      "Effect": "Allow"
+                    },
+                    {"Ref" : "AWS::NoValue"}
+                  ]
                 }
               ]
             }
@@ -378,6 +419,15 @@
       "Properties": {
         "LogGroupName": "/aws/lambda/cs-horizon-sensor-installation-orchestrator",
         "RetentionInDays": 1
+      }
+    },
+    "CrowdStrikeSensorManagementFalconCredentialsSecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Condition": "ShouldCreateSensorManagementCredentialsSecret",
+      "Properties": {
+        "Name": "/CrowdStrike/CSPM/SensorManagement/FalconAPICredentials",
+        "Description": "Falcon API credentials. Used by the 1-Click sensor management orchestrator.",
+        "SecretString": {"Fn::Sub": "{\"ClientId\":\"${ClientID}\",\"ClientSecret\":\"${ClientSecret}\"}"}
       }
     },
     "CrowdStrikeSensorManagementLambda": {
@@ -396,11 +446,27 @@
         "Description": "",
         "Environment": {
           "Variables": {
+            "CS_ADDRESS": "",
             "CS_CLIENT_ID": {
-              "Ref": "ClientID"
+              "Fn::If": [
+                "APICredentialsInLambdaEnabled",
+                {"Ref": "ClientID"},
+                {"Ref": "AWS::NoValue"}
+              ]
             },
             "CS_CLIENT_SECRET": {
-              "Ref": "ClientSecret"
+              "Fn::If": [
+                "APICredentialsInLambdaEnabled",
+                {"Ref": "ClientSecret"},
+                {"Ref": "AWS::NoValue"}
+              ]
+            },
+            "CS_API_CREDENTIALS_AWS_SECRET": {
+              "Fn::If": [
+                "APICredentialsInSecretEnabled",
+                "/CrowdStrike/CSPM/SensorManagement/FalconAPICredentials",
+                {"Ref": "AWS::NoValue"}
+              ]
             },
             "CS_MODE": "force_auth",
             "CS_DEBUG_ENABLED": "true"
