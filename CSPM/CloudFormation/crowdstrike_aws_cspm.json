@@ -272,14 +272,14 @@
       "CrowdStrikeSensorManagementRole": {
         "Type": "AWS::IAM::Role",
         "Condition": "ShouldCreateSensorManagementResources",
-        "PermissionsBoundary": { 
-            "Fn::If": [ 
-              "SetPermissionsBoundary", 
-              {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"}, 
-              {"Ref": "AWS::NoValue"}
-            ]
-          },
         "Properties": {
+          "PermissionsBoundary": { 
+              "Fn::If": [ 
+                "SetPermissionsBoundary", 
+                {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"}, 
+                {"Ref": "AWS::NoValue"}
+              ]
+          },
           "RoleName": "CrowdStrikeSensorManagement",
           "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
@@ -340,14 +340,14 @@
       "CrowdStrikeSensorManagementOrchestratorRole": {
         "Type": "AWS::IAM::Role",
         "Condition": "ShouldCreateSensorManagementResources",
-        "PermissionsBoundary": { 
+        "Properties": {
+          "PermissionsBoundary": { 
             "Fn::If": [ 
               "SetPermissionsBoundary", 
               {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"}, 
               {"Ref": "AWS::NoValue"}
             ]
           },
-        "Properties": {
           "RoleName": "CrowdStrikeSensorManagementOrchestrator",
           "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
