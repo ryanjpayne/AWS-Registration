@@ -439,7 +439,7 @@ Resources:
       Handler: lambda_function.lambda_handler
       MemorySize: 128
       Role: !GetAtt "LambdaCrowdStrikeRegistrationRole.Arn"
-      Runtime: python3.10
+      Runtime: python3.11
       Timeout: 900
       FunctionName: crowdstrike-cloud-registration
       Code:
