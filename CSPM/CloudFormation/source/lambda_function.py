@@ -28,7 +28,8 @@ SECRET_STORE_NAME = os.environ['secret_name']
 SECRET_STORE_REGION = os.environ['secret_region']
 AWS_REGION = os.environ['aws_region']
 CS_CLOUD = os.environ['cs_cloud']
-ACCOUNT_TYPE = os.environ['account_type']
+AWS_ACCOUNT_TYPE = os.environ['aws_account_type']
+FALCON_ACCOUNT_TYPE = os.environ['falcon_account_type']
 
 def get_secret(secret_name, secret_region):
     session = boto3.session.Session()
@@ -117,7 +118,7 @@ def lambda_handler(event, context):
                                                     use_existing_cloudtrail=True,
                                                     user_agent=useragent,
                                                     is_master=True,
-                                                    account_type=ACCOUNT_TYPE
+                                                    account_type=AWS_ACCOUNT_TYPE
                                                     )
                 if response['status_code'] == 400:
                     error = response['body']['errors'][0]['message']
@@ -135,9 +136,9 @@ def lambda_handler(event, context):
                         "cs_role_name": response['body']['resources'][0]['intermediate_role_arn'].rsplit('/')[1],
                         "external_id": response['body']['resources'][0]['external_id']
                     }
-                    if ACCOUNT_TYPE == "commercial":
+                    if FALCON_ACCOUNT_TYPE == "commercial":
                         response_d['eventbus_name'] = response['body']['resources'][0]['eventbus_name']
-                    elif ACCOUNT_TYPE == "govcloud":
+                    elif FALCON_ACCOUNT_TYPE == "govcloud":
                         response_d['eventbus_name'] = response['body']['resources'][0]['eventbus_name'].rsplit(',')[0]
                     cfnresponse_send(event, context, SUCCESS, response_d, "CustomResourcePhysicalID")
                 else:

@@ -427,7 +427,8 @@ Resources:
     Properties:
       Environment:
         Variables:
-          account_type: !Ref FalconAccountType
+          aws_account_type: !Ref AWSAccountType
+          falcon_account_type: !Ref FalconAccountType
           secret_region: !Ref AWS::Region
           secret_name: !Join
             - '-'
