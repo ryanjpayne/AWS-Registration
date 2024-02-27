@@ -96,7 +96,7 @@ resource "aws_lambda_layer_version" "falconpy_lambda_layer" {
   depends_on = [data.archive_file.zip_falconpy_layer]
   filename            = "packages/layer.zip"
   layer_name          = "falconpy"
-  compatible_runtimes = ["python3.8"]
+  compatible_runtimes = ["python3.10"]
 }
 
 resource "aws_lambda_function" "register_lambda" {
@@ -106,7 +106,7 @@ resource "aws_lambda_function" "register_lambda" {
   role             = aws_iam_role.register_lambda_role.arn
   handler          = "lambda.lambda_handler"
   #source_code_hash = filebase64sha256("packages/lambda.py.zip")
-  runtime          = "python3.8"
+  runtime          = "python3.10"
   timeout          = 300
   layers           = [aws_lambda_layer_version.falconpy_lambda_layer.arn]
   environment {

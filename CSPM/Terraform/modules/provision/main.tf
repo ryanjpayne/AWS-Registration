@@ -42,6 +42,9 @@ resource "aws_iam_role" "cs-iam-role" {
         Statement = [
         {
             Action = [
+            "ecr:BatchGetImage",
+            "ecr:GetDownloadUrlForLayer",
+            "lambda:GetLayerVersion",
             "backup:ListBackupPlans",
             "backup:ListRecoveryPointsByBackupVault",
             "ecr:GetRegistryScanningConfiguration",
