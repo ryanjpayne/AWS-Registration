@@ -4,8 +4,8 @@
 
 This repository provides CloudFormation and Terraform templates to onboard AWS Organizations with CrowdStrike Cloud Security.
 
-| [CloudFormation](CSPM/CloudFormation/) 
-| [Terraform](CSPM/Terraform) |
+| [CloudFormation](https://github.com/CrowdStrike/cloud-aws-registration-cloudformation) 
+| [Terraform](https://github.com/CrowdStrike/cloud-aws-registration-terraform) |
 
 ## Questions or concerns?
 
