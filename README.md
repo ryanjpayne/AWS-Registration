@@ -2,14 +2,11 @@
 
 ## CrowdStrike AWS Registration
 
-This repository provides CloudFormation and Terraform templates to onboard AWS Organizations with CrowdStrike Cloud Security.
+## :warning: The contents of this repository have been moved to improve release schedule and issue handling. :warning:
 
 | [CloudFormation](https://github.com/CrowdStrike/cloud-aws-registration-cloudformation) 
 | [Terraform](https://github.com/CrowdStrike/cloud-aws-registration-terraform) |
 
-## Questions or concerns?
-
-If you encounter any issues or have questions about this repository, please open an [issue](https://github.com/CrowdStrike/AWS-Registration/issues/new/choose).
 
 ## Statement of Support
 
