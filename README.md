@@ -2,7 +2,7 @@
 
 ## CrowdStrike AWS Registration
 
-## :warning: The contents of this repository have been moved to improve release schedule and issue handling. :warning:
+## :warning: The contents of this repository have been moved :warning:
 
 | [CloudFormation](https://github.com/CrowdStrike/cloud-aws-registration-cloudformation) 
 | [Terraform](https://github.com/CrowdStrike/cloud-aws-registration-terraform) |
